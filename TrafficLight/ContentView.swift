@@ -16,7 +16,7 @@ struct ContentView: View {
 
     private let lightsOn = 1.0
     private let lightsOff = 0.3
-    
+
     @State private var start = true
     @State private var activeLight = ActiveLight.red
 
@@ -26,22 +26,14 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            Color(UIColor.systemGray)
+            Color.black
                 .ignoresSafeArea()
             VStack {
                 lights
                 Spacer()
-                Button(action: changeLight) {
-                    Text(start ? "START" : "NEXT")
-                        .frame(width: 200, height: 70)
-                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.white, lineWidth: 10))
-                        .font(.largeTitle .bold())
-                        .foregroundColor(.white)
-                        .background(.blue)
-                        .cornerRadius(20)
-                }
+                button
             }
-            .padding(.vertical, 20)
+            .padding(.vertical, 16)
         }
     }
 
@@ -50,6 +42,19 @@ struct ContentView: View {
             CircleView(color: .red, opacity: redLight)
             CircleView(color: .yellow, opacity: yellowLight)
             CircleView(color: .green, opacity: greenLight)
+        }
+    }
+
+    private var button: some View {
+        Button(action: changeLight) {
+            Text(start ? "START" : "NEXT")
+                .frame(width: 150, height: 60)
+                .overlay(RoundedRectangle(cornerRadius: 20)
+                    .stroke(Color.white, lineWidth: 10))
+                .font(.title .bold())
+                .foregroundColor(.white)
+                .background(.blue)
+                .cornerRadius(20)
         }
     }
 
