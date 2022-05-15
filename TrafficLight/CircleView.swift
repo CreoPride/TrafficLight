@@ -9,8 +9,8 @@ import SwiftUI
 
 struct CircleView: View {
     
-    var color: Color
-    var opacity: Double
+    let color: Color
+    let opacity: Double
     
     var body: some View {
         Circle()
