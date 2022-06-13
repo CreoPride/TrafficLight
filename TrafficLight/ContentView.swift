@@ -10,13 +10,6 @@ import SwiftUI
 
 struct ContentView: View {
 
-    enum ActiveLight {
-        case red, yellow, green
-    }
-
-    private let lightsOn = 1.0
-    private let lightsOff = 0.3
-
     @State private var start = true
     @State private var activeLight = ActiveLight.red
 
@@ -29,36 +22,22 @@ struct ContentView: View {
             Color.black
                 .ignoresSafeArea()
             VStack {
-                lights
+                CircleView(color: .red, opacity: redLight)
+                CircleView(color: .yellow, opacity: yellowLight)
+                CircleView(color: .green, opacity: greenLight)
                 Spacer()
-                button
+                ChangeColorButton(
+                    title: start ? "START" : "NEXT",
+                    action: changeLight)
             }
             .padding(.vertical, 16)
         }
     }
 
-    private var lights: some View {
-        VStack{
-            CircleView(color: .red, opacity: redLight)
-            CircleView(color: .yellow, opacity: yellowLight)
-            CircleView(color: .green, opacity: greenLight)
-        }
-    }
-
-    private var button: some View {
-        Button(action: changeLight) {
-            Text(start ? "START" : "NEXT")
-                .frame(width: 150, height: 60)
-                .overlay(RoundedRectangle(cornerRadius: 20)
-                    .stroke(Color.white, lineWidth: 10))
-                .font(.title .bold())
-                .foregroundColor(.white)
-                .background(.blue)
-                .cornerRadius(20)
-        }
-    }
-
     private func changeLight() {
+        let lightsOn = 1.0
+        let lightsOff = 0.3
+
         start = false
         switch activeLight {
         case .red:
@@ -74,6 +53,13 @@ struct ContentView: View {
             yellowLight = lightsOff
             activeLight = .red
         }
+    }
+}
+
+extension ContentView {
+
+    enum ActiveLight {
+        case red, yellow, green
     }
 }
 
