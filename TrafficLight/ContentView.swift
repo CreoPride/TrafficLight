@@ -7,59 +7,53 @@
 
 import SwiftUI
 
-
 struct ContentView: View {
 
-    @State private var start = true
-    @State private var activeLight = ActiveLight.red
+    @State private var buttonTitle = "START"
+    @State private var activeLight = ActiveLight.none
 
-    @State private var redLight = 0.3
-    @State private var yellowLight = 0.3
-    @State private var greenLight = 0.3
+    private let lightOn = 1.0
+    private let lightOff = 0.3
 
     var body: some View {
         ZStack {
             Color.black
                 .ignoresSafeArea()
             VStack {
-                CircleView(color: .red, opacity: redLight)
-                CircleView(color: .yellow, opacity: yellowLight)
-                CircleView(color: .green, opacity: greenLight)
+                CircleView(color: .red, opacity: activeLight == .red ? lightOn : lightOff)
+                CircleView(color: .yellow, opacity: activeLight == .yellow ? lightOn : lightOff)
+                CircleView(color: .green, opacity: activeLight == .green ? lightOn : lightOff)
                 Spacer()
-                ChangeColorButton(
-                    title: start ? "START" : "NEXT",
-                    action: changeLight)
+
+                ChangeColorButton(title: buttonTitle) {
+                    if buttonTitle == "START" {
+                        buttonTitle = "NEXT"
+                    }
+                    changeLight()
+                }
             }
             .padding(.vertical, 16)
         }
-    }
-
-    private func changeLight() {
-        let lightsOn = 1.0
-        let lightsOff = 0.3
-
-        start = false
-        switch activeLight {
-        case .red:
-            redLight = lightsOn
-            greenLight = lightsOff
-            activeLight = .yellow
-        case .yellow:
-            yellowLight = lightsOn
-            redLight = lightsOff
-            activeLight = .green
-        case .green:
-            greenLight = lightsOn
-            yellowLight = lightsOff
-            activeLight = .red
+        .onTapGesture {
+            activeLight = .none
+            buttonTitle = "START"
         }
     }
 }
 
 extension ContentView {
 
-    enum ActiveLight {
-        case red, yellow, green
+    private enum ActiveLight {
+        case red, yellow, green, none
+    }
+
+    private func changeLight() {
+        switch activeLight {
+        case .red: activeLight = .yellow
+        case .yellow: activeLight = .green
+        case .green: activeLight = .red
+        case .none: activeLight = .red
+        }
     }
 }
 
